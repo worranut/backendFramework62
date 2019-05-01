@@ -67,7 +67,8 @@ router.post("/register", (req, res) => {
             }, function (err, result) {
                 if (err) {
                     res.send({
-                        status: false
+                        status: false,
+                        message: err.message
                     });
                 }
                 console.log(result);
@@ -81,7 +82,8 @@ router.post("/register", (req, res) => {
                     dbo.collection("userLoginTable").insertOne(userObj, function (err, result) {
                         if (err) {
                             res.send({
-                                status: false
+                                status: false,
+                                message: err.message
                             });
                         }
                         res.send({
@@ -112,8 +114,6 @@ router.post("/login", (req, res) => {
                 username: nameVar,
                 password: passwordVar
             }, function (err, user) {
-                console.log(user);
-
                 if (err) {
                     res.send({
                         status: false
