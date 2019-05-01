@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const MongoClient = require("mongodb").MongoClient;
+const jwt = require("jsonwebtoken");
 
 // Test commit
 router.get("/", (req, res) => {
@@ -84,13 +85,12 @@ router.post("/register", (req, res) => {
                             });
                         }
                         res.send({
-                            status: "store success",
-                            name: nameVar //response
+                            status: true
                         });
-                        db.close();
                     });
                 }
             });
+            db.close();
         }
     );
 });
@@ -119,10 +119,30 @@ router.post("/login", (req, res) => {
                         status: false
                     });
                 }
-                if (result) {
-                    res.send({
-                        status: true
-                    });
+                if (user) {
+                    const jwtBearerToken = jwt.sign({
+                            id: user._id,
+                            rank: user.rank,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            id_mil: user.id_mil,
+                            unit_name: user.unit_name,
+                            username: user.username
+                        },
+                        'secret', {
+                            algorithm: "RS256",
+                            // expiresIn: 3600, // 1 hour
+                            expiresIn: "365d", // 1 Year
+                            subject: "JWT"
+                        }
+                    );
+                    res.send(
+                        JSON.stringify({
+                            status: true,
+                            token: jwtBearerToken,
+                            expiresIn: jwtBearerToken.expiresIn
+                        })
+                    );
                 } else {
                     res.send({
                         status: false
