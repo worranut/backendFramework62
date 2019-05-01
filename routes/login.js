@@ -120,27 +120,22 @@ router.post("/login", (req, res) => {
                     });
                 }
                 if (user) {
-                    const jwtBearerToken = jwt.sign({
-                            id: user._id,
-                            rank: user.rank,
-                            first_name: user.first_name,
-                            last_name: user.last_name,
-                            id_mil: user.id_mil,
-                            unit_name: user.unit_name,
-                            username: user.username
-                        },
-                        'secret', {
-                            algorithm: "RS256",
-                            // expiresIn: 3600, // 1 hour
-                            expiresIn: "365d", // 1 Year
-                            subject: "JWT"
-                        }
-                    );
+                    var jwtBearerToken = jwt.sign({
+                        id: user._id,
+                        rank: user.rank,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        id_mil: user.id_mil,
+                        unit_name: user.unit_name,
+                        username: user.username
+                    }, 'secret', {
+                        expiresIn: "365d", // 1 Year
+                        subject: "JWT"
+                    });
                     res.send(
                         JSON.stringify({
                             status: true,
-                            token: jwtBearerToken,
-                            expiresIn: jwtBearerToken.expiresIn
+                            token: jwtBearerToken
                         })
                     );
                 } else {
