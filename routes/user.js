@@ -33,8 +33,7 @@ router.get('/list/:pageNumber', (req, res) => {
                         last_name: 1,
                         id_mil: 1,
                         unit_name: 1,
-                        username: 1,
-                        password: 0
+                        username: 1
                     }
                 })
                 .sort({
@@ -42,8 +41,11 @@ router.get('/list/:pageNumber', (req, res) => {
                 })
                 .toArray(function (err, result) {
                     if (err) {
+                        console.log(err);
+
                         res.sendStatus(404);
                     } else {
+                        console.log(result);
                         res.send(result);
                     }
                     db.close();
