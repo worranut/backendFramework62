@@ -87,10 +87,10 @@ router.post("/register", (req, res) => {
                             status: "store success",
                             name: nameVar //response
                         });
+                        db.close();
                     });
                 }
             });
-            db.close();
         }
     );
 });
