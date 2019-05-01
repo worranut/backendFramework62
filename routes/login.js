@@ -111,8 +111,8 @@ router.post("/login", (req, res) => {
             dbo.collection("userLoginTable").findOne({
                 username: nameVar,
                 password: passwordVar
-            }, function (err, result) {
-                console.log(result);
+            }, function (err, user) {
+                console.log(user);
 
                 if (err) {
                     res.send({
