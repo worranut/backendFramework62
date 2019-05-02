@@ -150,21 +150,25 @@ router.post("/login", (req, res) => {
 });
 
 router.post('/verifyToken', (req, res) => {
-    verifyToken.verify(req.body.token, function (verify) {
-        if (verify) {
-            res.send(
-                JSON.stringify({
-                    verify: true
-                })
-            );
-        } else {
-            res.send(
-                JSON.stringify({
-                    verify: false
-                })
-            );
+    jwt.verify(
+        req.body.token,
+        'secret', {},
+        function (err, payload) {
+            if (payload) {
+                res.send(
+                    JSON.stringify({
+                        verify: true
+                    })
+                );
+            } else {
+                res.send(
+                    JSON.stringify({
+                        verify: false
+                    })
+                );
+            }
         }
-    });
+    );
 });
 
 module.exports = router;
